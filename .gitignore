@@ -1,0 +1,17 @@
+#################
+## Eclipse
+#################
+*/.metadata/
+*/bin/
+*/classes/
+*/tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+*/local.properties
+
+*/.settings/
+*.loadpath
+
+
