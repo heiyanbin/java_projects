@@ -32,4 +32,11 @@ public class TreeAlgorithmTest {
 		target.inOrder(newRoot);
 
 	}
+	
+	@Test
+	public void testBuildTrie() 
+	{
+		TrieNode root = target.buildTrie(new String[]{"am","the","best"});
+		System.out.println();
+	}
 }

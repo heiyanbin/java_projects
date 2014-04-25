@@ -1,5 +1,7 @@
 package code_practice;
 
+import java.util.*;
+
 class TreeNode<T>
 {
 	T data;
@@ -7,6 +9,12 @@ class TreeNode<T>
 	TreeNode<T> right;
 	
 	public TreeNode(T data) { this.data = data;}
+}
+class TrieNode
+{
+	Character letter;
+	List<TrieNode> links = new ArrayList<TrieNode>();
+	TrieNode(Character letter){this.letter= letter;}
 }
 
 public class TreeAlgorithm {
@@ -119,6 +127,30 @@ public class TreeAlgorithm {
 			return root;
 		else
 			return replacement;
+	}
+	public TrieNode buildTrie(String[] words)
+	{
+		TrieNode root = new TrieNode(null);
+		TrieNode p = null;
+		for(String word : words)
+		{
+			p = root;
+			for(char letter : word.toLowerCase().toCharArray())
+			{
+				int i =0;
+				while(p.links.size()>0 && p.links.get(i).letter< letter && i<p.links.size())
+					i++;
+				if(i>=p.links.size())							
+				{
+					i=0;
+					while(p.links.size()>0 && p.links.get(i).letter<letter)
+						i++;
+					p.links.add(i,new TrieNode(letter));
+				}
+				p=p.links.get(i);
+			}
+		}
+		return root;
 	}
 }
 
