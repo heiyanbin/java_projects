@@ -29,7 +29,7 @@ class GraphNode<T>
 	}
 }
 
-public class GraphRelated<T>
+public class GraphAlgorithm<T>
 {
 	int minLen = Integer.MAX_VALUE;
 	List<GraphNode<T>> curPath= new ArrayList<GraphNode<T>>();

@@ -7,9 +7,9 @@ import java.util.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class GraphRelatedTest {
+public class GraphAlgorithmTest {
 
-	GraphRelated<Integer> target;
+	GraphAlgorithm<Integer> target;
 	List<GraphNode<Integer>> g;
 	@Before
 	public void setUp() throws Exception 
@@ -26,7 +26,7 @@ public class GraphRelatedTest {
 		g.get(4).addLink(g.get(5));
 		g.get(5).addLink(g.get(6));		
 		
-		target = new GraphRelated<Integer>();
+		target = new GraphAlgorithm<Integer>();
 	}
 
 	@Test
