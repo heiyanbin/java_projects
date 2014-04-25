@@ -10,7 +10,14 @@ class TreeNode<T>
 }
 
 public class TreeAlgorithm {
-	public TreeNode<Integer> buildBinarySearchTree (int[] array, int begin, int end)
+	public <T> void  inOrder(TreeNode<T> root)
+	{
+		if(root==null) return;	
+		inOrder(root.left);
+		System.out.print(root.data);
+		inOrder(root.right);
+	}
+	public TreeNode<Integer> buildBinarySearchTree (int[] array)
 	{
 		if(array==null) return null;
 		
@@ -42,10 +49,77 @@ public class TreeAlgorithm {
 				}
 			}
 		}
-		return root;
-		
+		return root;	
 	}
+	public TreeNode<Integer> removeNodeFromBinarySearchTree(TreeNode<Integer> root, Integer a)
+	{
+		if(root==null || a== null ) throw new IllegalArgumentException("Null Argument.");
+		TreeNode<Integer> del = root;
+		TreeNode<Integer> replacement = null;
+		TreeNode<Integer> parent = new TreeNode<Integer>(0);
+		parent.left= root;
+		while(del!=null )
+		{
+			if(a<del.data) 
+			{
+				parent = del;
+				del=del.left; 
+				
+			}
+			else if(a>del.data) 
+			{
+				parent = del;
+				del=del.right;				
+			}
+			else
+			{
+				break;
+			}
+		}
+		if(del==null) 
+			throw new IllegalArgumentException("not found");
+		
+		
+		if(del.left ==null && del.right==null) 
+		{
+			if(parent.left== del) parent.left = null;
+			else parent.right =null;
+		}
+		else if(del.left == null)
+		{
+			if(parent.left == del) parent.left = del.right;
+			else parent.right= del.right;
+		}
+		else if(del.right == null)
+		{
+			if(parent.left == del) parent.left = del.left;
+			else parent.right = del.left;
+		}
+		else
+		{
+			TreeNode<Integer> parent2= del;
+			replacement = del.right;		
+			while(replacement.left!=null)
+			{
+				parent2 = replacement;
+				replacement = replacement.left;
+			}
+			if(parent2.left==replacement) parent2.left= replacement.right;
+			else parent2.right = replacement.right;
+			
+			replacement.left = del.left;
+			replacement.right = del.right;
+			
+			
+			if(parent.left==del) parent.left=replacement;
+			else  parent.right = replacement;
 
+		}
+		if(del!=root)
+			return root;
+		else
+			return replacement;
+	}
 }
 
 
