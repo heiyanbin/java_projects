@@ -33,6 +33,12 @@ class TrieNode
 			int i = 0;
 			while(i<subfixes.size() || subfixes.get(i).letter<c)
 				i++;
+			if(i>=subfixes.size())
+			{
+				p = new TrieNode(c);
+				subfixes.add(p);
+				return p;
+			}
 			if(subfixes.get(i).letter== c)
 			{
 				return subfixes.get(i);
