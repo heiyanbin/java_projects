@@ -32,4 +32,33 @@ public class TreeAlgorithmTest {
 		target.inOrder(newRoot);
 
 	}
+	
+	@Test
+	public void testAddSiblingLink()
+	{
+		target.addSiblingLink(root);
+		TreeNode<Integer> head= root, p;
+		while(head!=null)
+		{
+			p=head;
+			head=null;
+			while(p!=null)
+			{
+				System.out.print(p.data+ " ");
+				if(head==null)
+				{
+					if(p.left!=null) head= p.left;
+					else if(p.right!=null) head=p.right;
+				}
+				p=p.sibling;
+			}	
+			System.out.println();
+		}
+	}
+	@Test
+	public void testPrintByLevel()
+	{
+		target.printByLevel(root);
+	}
+
 }
