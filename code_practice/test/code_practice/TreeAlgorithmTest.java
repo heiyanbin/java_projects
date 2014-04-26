@@ -61,4 +61,16 @@ public class TreeAlgorithmTest {
 		target.printByLevel(root);
 	}
 
+	@Test
+	public void testBuildTrie()
+	{
+		TrieNode root = target.buildTrie(new String[]{"i","am","best"});
+		System.out.println();
+	}
+	@Test
+	public void testPrintAllWords()
+	{
+		TrieNode root = target.buildTrie(new String[]{"inn", "int", "at", "age", "adv", "ant","inn"});
+		target.printAllWords(root);
+	}
 }

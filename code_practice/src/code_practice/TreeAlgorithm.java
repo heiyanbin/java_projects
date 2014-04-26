@@ -12,6 +12,41 @@ class TreeNode<T>
 	public TreeNode(T data) { this.data = data;}
 }
 
+class TrieNode
+{
+	Character letter;
+	boolean isWord;
+	int wordCount;
+	List<TrieNode> subfixes= new LinkedList<TrieNode>();
+	TrieNode(Character letter) {this.letter = letter;}
+	TrieNode addOrFindChild(char c)
+	{
+		TrieNode p;
+		if(subfixes.isEmpty())
+		{
+			p = new TrieNode(c);
+			subfixes.add(p);
+			return p;
+		}
+		else
+		{
+			int i = 0;
+			while(i<subfixes.size() || subfixes.get(i).letter<c)
+				i++;
+			if(subfixes.get(i).letter== c)
+			{
+				return subfixes.get(i);
+			}
+			else
+			{
+				p = new TrieNode(c);
+				subfixes.add(i,p);
+				return p;
+			}
+		}
+	}
+}
+
 public class TreeAlgorithm {
 	public <T> void  inOrder(TreeNode<T> root)
 	{
@@ -192,6 +227,68 @@ public class TreeAlgorithm {
 				nextCount=0;
 			}
 		}
+	}
+	public TrieNode buildTrie(String[] words)
+	{
+		TrieNode root  = new TrieNode(null);	
+		if (words==null) return root;
+		for(String word : words	)
+		{
+			if(word==null || word=="") continue;
+			TrieNode p = root;
+			for(char c : word.toLowerCase().toCharArray())
+			{
+				TrieNode q = null;
+				if(p.subfixes.isEmpty())
+				{
+					q= new TrieNode(c);
+					p.subfixes.add(q);
+				}
+				else
+				{
+					int i= 0;
+					while(i<p.subfixes.size() && p.subfixes.get(i).letter<c)
+						i++;
+					if(i>=p.subfixes.size())
+					{
+						q= new TrieNode(c);
+						p.subfixes.add(q);
+					}
+					if(c<p.subfixes.get(i).letter)
+					{
+						q= new TrieNode(c);
+						p.subfixes.add(i,q);
+					}
+					else
+					{
+						q=p.subfixes.get(i);
+					}
+				}
+				p=q;
+			}	
+			p.wordCount++;
+		}
+		return root;
+	}
+	List<TrieNode> path = new LinkedList<TrieNode>();
+	public void printAllWords(TrieNode root)
+	{
+		if(root==null)
+			return;
+		path.add(root);
+		if(root.wordCount>0)
+		{
+			for(TrieNode t : path)
+				if(t.letter!=null)
+					System.out.print(t.letter);
+			System.out.println(" "+ root.wordCount);	
+		}
+		for(TrieNode child : root.subfixes)
+		{
+			printAllWords(child);
+		}
+		path.remove(root);
+		
 	}
 }
 

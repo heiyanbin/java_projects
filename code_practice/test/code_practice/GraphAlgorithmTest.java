@@ -49,4 +49,16 @@ public class GraphAlgorithmTest {
 	{
 		target.BFS(g.get(1));
 	}
+	
+	@Test
+	public void test()
+	{
+		List<Integer> list = new ArrayList<Integer>(); 
+		for(int i= 0;i<3;i++)
+			list.add(0,i);
+		
+		list.add(4,4);
+		
+		System.out.println();
+	}
 }
