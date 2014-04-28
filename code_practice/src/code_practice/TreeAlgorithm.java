@@ -7,14 +7,50 @@ class TreeNode<T>
 	T data;
 	TreeNode<T> left;
 	TreeNode<T> right;
+	TreeNode<T> sibling;
 	
 	public TreeNode(T data) { this.data = data;}
 }
+
 class TrieNode
 {
 	Character letter;
-	List<TrieNode> links = new ArrayList<TrieNode>();
-	TrieNode(Character letter){this.letter= letter;}
+	boolean isWord;
+	int wordCount;
+	List<TrieNode> subfixes= new LinkedList<TrieNode>();
+	TrieNode(Character letter) {this.letter = letter;}
+	TrieNode addOrFindChild(char c)
+	{
+		TrieNode p;
+		if(subfixes.isEmpty())
+		{
+			p = new TrieNode(c);
+			subfixes.add(p);
+			return p;
+		}
+		else
+		{
+			int i = 0;
+			while(i<subfixes.size() || subfixes.get(i).letter<c)
+				i++;
+			if(i>=subfixes.size())
+			{
+				p = new TrieNode(c);
+				subfixes.add(p);
+				return p;
+			}
+			if(subfixes.get(i).letter== c)
+			{
+				return subfixes.get(i);
+			}
+			else
+			{
+				p = new TrieNode(c);
+				subfixes.add(i,p);
+				return p;
+			}
+		}
+	}
 }
 
 public class TreeAlgorithm {
@@ -64,19 +100,19 @@ public class TreeAlgorithm {
 		if(root==null || a== null ) throw new IllegalArgumentException("Null Argument.");
 		TreeNode<Integer> del = root;
 		TreeNode<Integer> replacement = null;
-		TreeNode<Integer> parent = new TreeNode<Integer>(0);
-		parent.left= root;
+		TreeNode<Integer> parentOfDel = new TreeNode<Integer>(0);
+		parentOfDel.left= root;
 		while(del!=null )
 		{
 			if(a<del.data) 
 			{
-				parent = del;
+				parentOfDel = del;
 				del=del.left; 
 				
 			}
 			else if(a>del.data) 
 			{
-				parent = del;
+				parentOfDel = del;
 				del=del.right;				
 			}
 			else
@@ -90,37 +126,37 @@ public class TreeAlgorithm {
 		
 		if(del.left ==null && del.right==null) 
 		{
-			if(parent.left== del) parent.left = null;
-			else parent.right =null;
+			if(parentOfDel.left== del) parentOfDel.left = null;
+			else parentOfDel.right =null;
 		}
 		else if(del.left == null)
 		{
-			if(parent.left == del) parent.left = del.right;
-			else parent.right= del.right;
+			if(parentOfDel.left == del) parentOfDel.left = del.right;
+			else parentOfDel.right= del.right;
 		}
 		else if(del.right == null)
 		{
-			if(parent.left == del) parent.left = del.left;
-			else parent.right = del.left;
+			if(parentOfDel.left == del) parentOfDel.left = del.left;
+			else parentOfDel.right = del.left;
 		}
 		else
 		{
-			TreeNode<Integer> parent2= del;
+			TreeNode<Integer> parentOfReplacement= del;
 			replacement = del.right;		
 			while(replacement.left!=null)
 			{
-				parent2 = replacement;
+				parentOfReplacement = replacement;
 				replacement = replacement.left;
 			}
-			if(parent2.left==replacement) parent2.left= replacement.right;
-			else parent2.right = replacement.right;
+			if(parentOfReplacement.left==replacement) parentOfReplacement.left= replacement.right;
+			else parentOfReplacement.right = replacement.right;
 			
 			replacement.left = del.left;
 			replacement.right = del.right;
 			
 			
-			if(parent.left==del) parent.left=replacement;
-			else  parent.right = replacement;
+			if(parentOfDel.left==del) parentOfDel.left=replacement;
+			else  parentOfDel.right = replacement;
 
 		}
 		if(del!=root)
@@ -128,30 +164,140 @@ public class TreeAlgorithm {
 		else
 			return replacement;
 	}
+
+	public <T> void addSiblingLink(TreeNode<T> root)
+	{
+		if(root==null)	return;
+		TreeNode<T> head=root, p= null, prev =null;
+		while(head!=null)
+		{
+			prev=null;
+			p=head;
+			head=null;
+			while(p!=null)
+			{
+				if(p.left!=null)
+				{
+					if(prev!=null) 
+					{
+						prev.sibling=p.left;
+						prev= prev.sibling;
+					}
+					else
+					{
+						prev=p.left;
+						head= prev;
+					}
+				}
+				if(p.right !=null)
+				{
+					if(prev!=null) 
+					{
+						prev.sibling = p.right;
+						prev= prev.sibling;
+					}
+					else 
+					{
+						prev = p.right;
+						head=prev;
+					}
+				}
+				p=p.sibling;
+			}
+		}
+	}
+	public <T> void printByLevel(TreeNode<T> root)
+	{
+		if(root==null) return;
+		List<TreeNode<T>> list = new ArrayList<TreeNode<T>>();
+		list.add(root);
+		int nextCount=0,currentCount=1;
+		while(list.size()>0)
+		{
+			TreeNode<T> item = list.remove(0);
+			System.out.print(item.data +" ");
+			if(item.left!=null)
+			{
+				list.add(item.left);
+				nextCount++;
+			}
+			if(item.right!=null)
+			{
+				list.add(item.right);
+				nextCount++;
+			}
+			currentCount--;
+			if(currentCount==0)
+			{
+				System.out.println();
+				currentCount=nextCount;
+				nextCount=0;
+			}
+		}
+	}
 	public TrieNode buildTrie(String[] words)
 	{
-		TrieNode root = new TrieNode(null);
-		TrieNode p = null;
-		for(String word : words)
+		TrieNode root  = new TrieNode(null);	
+		if (words==null) return root;
+		for(String word : words	)
 		{
-			p = root;
-			for(char letter : word.toLowerCase().toCharArray())
+			if(word==null || word=="") continue;
+			TrieNode p = root;
+			for(char c : word.toLowerCase().toCharArray())
 			{
-				int i =0;
-				while(p.links.size()>0 && p.links.get(i).letter< letter && i<p.links.size())
-					i++;
-				if(i>=p.links.size())							
+				TrieNode q = null;
+				if(p.subfixes.isEmpty())
 				{
-					i=0;
-					while(p.links.size()>0 && p.links.get(i).letter<letter)
-						i++;
-					p.links.add(i,new TrieNode(letter));
+					q= new TrieNode(c);
+					p.subfixes.add(q);
 				}
-				p=p.links.get(i);
-			}
+				else
+				{
+					int i= 0;
+					while(i<p.subfixes.size() && p.subfixes.get(i).letter<c)
+						i++;
+					if(i>=p.subfixes.size())
+					{
+						q= new TrieNode(c);
+						p.subfixes.add(q);
+					}
+					if(c<p.subfixes.get(i).letter)
+					{
+						q= new TrieNode(c);
+						p.subfixes.add(i,q);
+					}
+					else
+					{
+						q=p.subfixes.get(i);
+					}
+				}
+				p=q;
+			}	
+			p.wordCount++;
 		}
 		return root;
 	}
+	List<TrieNode> path = new LinkedList<TrieNode>();
+	public void printAllWords(TrieNode root)
+	{
+		if(root==null)
+			return;
+		path.add(root);
+		if(root.wordCount>0)
+		{
+			for(TrieNode t : path)
+				if(t.letter!=null)
+					System.out.print(t.letter);
+			System.out.println(" "+ root.wordCount);	
+		}
+		for(TrieNode child : root.subfixes)
+		{
+			printAllWords(child);
+		}
+		path.remove(root);
+		
+	}
+
 }
 
 

@@ -34,9 +34,43 @@ public class TreeAlgorithmTest {
 	}
 	
 	@Test
-	public void testBuildTrie() 
+	public void testAddSiblingLink()
 	{
-		TrieNode root = target.buildTrie(new String[]{"am","the","best"});
+		target.addSiblingLink(root);
+		TreeNode<Integer> head= root, p;
+		while(head!=null)
+		{
+			p=head;
+			head=null;
+			while(p!=null)
+			{
+				System.out.print(p.data+ " ");
+				if(head==null)
+				{
+					if(p.left!=null) head= p.left;
+					else if(p.right!=null) head=p.right;
+				}
+				p=p.sibling;
+			}	
+			System.out.println();
+		}
+	}
+	@Test
+	public void testPrintByLevel()
+	{
+		target.printByLevel(root);
+	}
+
+	@Test
+	public void testBuildTrie()
+	{
+		TrieNode root = target.buildTrie(new String[]{"i","am","best"});
 		System.out.println();
+	}
+	@Test
+	public void testPrintAllWords()
+	{
+		TrieNode root = target.buildTrie(new String[]{"inn", "int", "at", "age", "adv", "ant","inn"});
+		target.printAllWords(root);
 	}
 }
