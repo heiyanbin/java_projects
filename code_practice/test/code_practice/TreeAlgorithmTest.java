@@ -73,4 +73,17 @@ public class TreeAlgorithmTest {
 		TrieNode root = target.buildTrie(new String[]{"inn", "int", "at", "age", "adv", "ant","inn"});
 		target.printAllWords(root);
 	}
+	
+	@Test
+	public void testLCA()
+	{
+		TreeNode<Integer> root = target.buildBinarySearchTree(new int[]{5,3,2,4,8,6,7,9});
+		TreeNode<Integer> a = target.find(root, 3);
+		TreeNode<Integer> b = target.find(root, 7);
+		assertEquals(root,target.LCA(root, a, b));
+		a = target.find(root, 9);
+		TreeNode<Integer> expected = target.find(root, 8);
+		TreeNode<Integer> actual = target.LCA(root, a, b);
+		assertEquals(expected, actual);
+	}
 }

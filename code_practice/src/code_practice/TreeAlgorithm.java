@@ -164,6 +164,7 @@ public class TreeAlgorithm {
 		else
 			return replacement;
 	}
+
 	public <T> void addSiblingLink(TreeNode<T> root)
 	{
 		if(root==null)	return;
@@ -296,6 +297,55 @@ public class TreeAlgorithm {
 		path.remove(root);
 		
 	}
+	
+	public <T> TreeNode<T> LCA(TreeNode<T> root, TreeNode<T> a, TreeNode<T> b)
+	{
+		if(root==null||a==null||b==null) return null;
+		if(root==a||root==b) return root;
+		if(isPartOf(root.left, a) && isPartOf(root.right,b) || isPartOf(root.right, a) && isPartOf(root.left, b)) 
+			return root;
+		if(isPartOf(root.left, a) && isPartOf(root.left,b)) return LCA(root.left, a, b);
+		if(isPartOf(root.right,a) && isPartOf(root.right,b)) return LCA(root.right, a, b);
+		return null;
+	}
+	
+	public <T> TreeNode<T> LCA2(TreeNode<T> root, TreeNode<T> a, TreeNode<T> b)
+	{
+		if(root==null||a==null||b==null) return null;
+		if(root==a||root==b) return root;
+		Integer num = 0;
+		has(root.left,a,b,num);
+		if(num==1)
+		{
+			//if()
+		}
+		return null;
+	}
+	public <T> boolean isPartOf(TreeNode<T> root, TreeNode<T> a)
+	{
+		if(root==null) return false;
+		if(a==null) return true;
+		if(root==a) return true;
+		return isPartOf(root.left, a)||isPartOf(root.right,a);
+	}
+	public <T> void has (TreeNode<T> root, TreeNode<T> a, TreeNode<T> b, Integer num)
+	{
+		if(a==null||b==null||a==b) throw new IllegalArgumentException();
+		if(root == null) return;
+		if(root==a||root==b) num++;
+		has(root.left, a, b, num);
+		has(root.right, a, b, num);
+	}
+	public <T> TreeNode<T> find(TreeNode<T> root, T value)
+	{
+		if(root==null||value==null) return null;
+		if(root.data.equals(value)) return root;
+		TreeNode<T> t = find(root.left, value);
+		if(t!=null) return t;
+		return find(root.right, value);
+		
+	}
+
 }
 
 
