@@ -297,6 +297,7 @@ public class TreeAlgorithm {
 		path.remove(root);
 		
 	}
+
 	
 	public <T> TreeNode<T> LCA(TreeNode<T> root, TreeNode<T> a, TreeNode<T> b)
 	{
