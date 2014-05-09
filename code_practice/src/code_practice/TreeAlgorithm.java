@@ -314,13 +314,15 @@ public class TreeAlgorithm {
 	{
 		if(root==null||a==null||b==null) return null;
 		if(root==a||root==b) return root;
-		Integer num = 0;
-		has(root.left,a,b,num);
-		if(num==1)
+		int numLeft = has(root.left, a, b);
+		if(numLeft==2) return LCA2(root.left, a, b);
+		if(numLeft==1)
 		{
-			//if()
+			if(has(root.right,a,b)==1) 
+				return root;
+			throw new IllegalArgumentException();
 		}
-		return null;
+		return LCA2(root.right,a,b);
 	}
 	public <T> boolean isPartOf(TreeNode<T> root, TreeNode<T> a)
 	{
@@ -329,13 +331,18 @@ public class TreeAlgorithm {
 		if(root==a) return true;
 		return isPartOf(root.left, a)||isPartOf(root.right,a);
 	}
-	public <T> void has (TreeNode<T> root, TreeNode<T> a, TreeNode<T> b, Integer num)
+	public <T> int has (TreeNode<T> root, TreeNode<T> a, TreeNode<T> b)
 	{
 		if(a==null||b==null||a==b) throw new IllegalArgumentException();
-		if(root == null) return;
-		if(root==a||root==b) num++;
-		has(root.left, a, b, num);
-		has(root.right, a, b, num);
+		if(root == null) return 0;
+		if(root==a||root==b) 
+		{
+			if(has(root.left, a, b)==1||has(root.right,a,b)==1) return 2;
+			return 1;		
+		}
+		int num = has(root.left,a,b);
+		if(num==2) return 2;
+		return num + has(root.right,a,b);
 	}
 	public <T> TreeNode<T> find(TreeNode<T> root, T value)
 	{
