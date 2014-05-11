@@ -100,4 +100,24 @@ public class TreeAlgorithmTest {
 		assertEquals(expected, actual);
 	}
 	
+	@Test
+	public void testTranverseByStack()
+	{
+		target.preOrderByStack(root);
+		System.out.print(" ");
+		target.preOrder(root);
+		System.out.println();
+		
+		target.inOrderByStack(root);
+		System.out.print(" ");
+		target.inOrder(root);
+		System.out.println();
+		
+		target.postOrderByStack(root);
+		System.out.print(" ");
+		target.postOrder(root);
+		System.out.println();
+		
+	}
+	
 }

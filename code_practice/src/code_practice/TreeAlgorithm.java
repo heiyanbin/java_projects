@@ -61,6 +61,20 @@ public class TreeAlgorithm {
 		System.out.print(root.data);
 		inOrder(root.right);
 	}
+	public <T> void preOrder(TreeNode<T> root)
+	{
+		if(root==null) return;
+		System.out.print(root.data);
+		preOrder(root.left);
+		preOrder(root.right);
+	}
+	public <T> void postOrder(TreeNode<T> root)
+	{
+		if(root==null) return;
+		postOrder(root.left);
+		postOrder(root.right);
+		System.out.print(root.data);
+	}
 	public TreeNode<Integer> buildBinarySearchTree (int[] array)
 	{
 		if(array==null) return null;
@@ -354,6 +368,72 @@ public class TreeAlgorithm {
 		
 	}
 
+	public <T> void preOrderByStack(TreeNode<T> root)
+	{
+		Stack<TreeNode<T>> stack = new Stack<TreeNode<T>>();
+		while(!stack.isEmpty()||root!=null)
+		{
+			if(root!=null)
+			{
+				System.out.print(root.data);
+				if(root.right!=null) 
+					stack.push(root.right);	
+				root=root.left;
+			}
+			else
+			{
+				root = stack.pop();
+			}				
+		}	
+	}
+	public <T> void inOrderByStack(TreeNode<T> root)
+	{
+		Stack<TreeNode<T>> stack = new Stack<TreeNode<T>>();
+		while(root!=null||!stack.isEmpty())
+		{
+			if(root!=null)
+			{
+				stack.push(root);
+				root=root.left;
+			}
+			else
+			{
+				root = stack.pop();
+				System.out.print(root.data);
+				root = root.right;
+			}
+		}
+	}
+	public <T> void postOrderByStack(TreeNode<T> root)
+	{
+		Stack<TreeNode<T>> stack = new Stack<TreeNode<T>>();
+		Stack<Integer> stack2 = new Stack<Integer>();
+		while(root!=null || !stack.isEmpty())
+		{
+			if(root!=null)
+			{
+				stack.push(root);
+				stack2.push(0);
+				root= root.left;
+			}
+			else
+			{
+				root = stack.pop();
+				int num = stack2.pop();
+				if(num==0)
+				{
+					stack.push(root);
+					stack2.push(1);
+					root = root.right;
+				}
+				else
+				{
+					System.out.print(root.data);
+					root = null;
+				}
+			}
+		}
+	}
 }
 
 
