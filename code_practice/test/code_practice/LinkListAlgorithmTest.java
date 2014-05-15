@@ -15,7 +15,7 @@ public class LinkListAlgorithmTest {
 	public void setUp()
 	{
 		target = new LinkListAlgorithm();
-		//head = target.makeLinkList(Arrays.asList(new Integer[]{1,2,3,4,5}));
+		head = target.makeLinkList(new ArrayList<Integer>(Arrays.asList(new Integer[]{1,2,3,4,5})));
 		
 		
 	}
@@ -32,5 +32,15 @@ public class LinkListAlgorithmTest {
 			c=c.next;
 		}
 	}
-
+	
+	@Test
+	public void testReverse()
+	{
+		LinkListNode<Integer> head1 = target.makeLinkList(new ArrayList<Integer>(Arrays.asList(new Integer[]{1,2,3,4,5})));
+		LinkListNode<Integer> head2 = target.makeLinkList(new ArrayList<Integer>(Arrays.asList(new Integer[]{1,2,3,4,5})));
+		target.reverseIteration(head1).print();
+		System.out.println();
+		target.reverseRecursive(head2).print();
+		assertEquals(target.reverseIteration(head1), target.reverseRecursive(head2));
+	}
 }
