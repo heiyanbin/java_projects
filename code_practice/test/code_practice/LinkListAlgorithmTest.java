@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
+import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,6 +13,7 @@ public class LinkListAlgorithmTest {
 	LinkListNode<Integer> head;
 	LinkListAlgorithm target;
 	
+	class ListNode extends LinkListNode<Integer>{}
 	@Before
 	public void setUp()
 	{
@@ -41,6 +44,90 @@ public class LinkListAlgorithmTest {
 		target.reverseIteration(head1).print();
 		System.out.println();
 		target.reverseRecursive(head2).print();
-		assertEquals(target.reverseIteration(head1), target.reverseRecursive(head2));
+		assertTrue(target.reverseIteration(head1).linkListEquals(target.reverseRecursive(head2)));
 	}
+	
+	@Test
+	public void testFindKToLast()
+	{
+		assertNull(target.findKToLast(head, 0));
+		assertEquals(4, target.findKToLast(head, 2).data.intValue());
+		assertEquals((Integer)1, target.findKToLast(head, 5).data);
+		assertEquals(5,target.findKToLast(head, 1).data.intValue());
+		try
+		{
+			target.findKToLast(head, 6);
+			fail("Expect IllegalArguemntException");
+		}catch (IllegalArgumentException e)
+		{
+			
+		}
+	}
+	
+	@Test
+	public void testHasLoop()
+	{
+		assertFalse(target.hasLoop(head));
+		
+		LinkListNode<Integer> p= head.next; 
+		while(head!=null && head.next!=null)
+			head=head.next;
+		head.next= p;
+		
+		assertTrue(target.hasLoop(head));		
+	}
+
+	@Test
+	public void testLoopStart()
+	{
+		assertNull(target.loopStart(head));
+		assertNull(target.loopStart2(head));
+		LinkListNode<Integer> loopStart = head.next; 
+		LinkListNode<Integer> p = head;
+		while(p!=null && p.next!=null)
+			p=p.next;
+		p.next= loopStart;		
+		assertEquals(loopStart.data, target.loopStart2(head).data);
+		assertEquals(loopStart.data, target.loopStart(head).data);
+		
+	}
+
+	@Test
+	public void testFindCross()
+	{
+		LinkListNode<Integer> head2 = target.makeLinkList(new Integer[]{6,7,8});
+		assertNull(target.findCross(head, head2));
+		
+		LinkListNode<Integer> p= head2;
+		while(p!=null && p.next!=null)
+			p=p.next;
+		
+		p.next=head.next;
+		
+		assertEquals(head.next, target.findCross(head, head2));
+		assertEquals(head.next, target.findCross(head, head.next));
+	}
+
+	@Test
+	public void testRemoveFromMiddle()
+	{
+		LinkListNode<Integer >del = head.next.next.next;
+		target.removeFromMiddle(del);
+		head.print();
+		assertTrue(head.linkListEquals(target.makeLinkList(new Integer[]{1,2,3,5})));
+	}
+
+	@Test
+	public void testFindMidNode()
+	{
+		assertEquals(head.next.next, target.findMidNode(head));
+	}
+
+	@Test
+	public void testInsertBefore()
+	{
+		target.insertBefore(head.next.next, new LinkListNode<Integer>(100));
+		assertTrue(head.linkListEquals(target.makeLinkList(new Integer[]{1,2,100,3,4,5})));
+	}
+
 }
