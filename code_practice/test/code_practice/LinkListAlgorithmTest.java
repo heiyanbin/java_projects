@@ -129,5 +129,15 @@ public class LinkListAlgorithmTest {
 		target.insertBefore(head.next.next, new LinkListNode<Integer>(100));
 		assertTrue(head.linkListEquals(target.makeLinkList(new Integer[]{1,2,100,3,4,5})));
 	}
+	
+	@Test
+	public void testRemove()
+	{
+		target.remove(head, 5);
+		assertTrue(head.linkListEquals(target.makeLinkList(new Integer[]{1,2,3,4})));
+		target.remove(head, 3);
+		assertTrue(head.linkListEquals(target.makeLinkList(new Integer[]{1,2,4})));	
+		assertTrue(target.remove(head, 1).linkListEquals(target.makeLinkList(new Integer[]{2,4})));
+	}
 
 }

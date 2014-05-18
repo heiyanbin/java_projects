@@ -265,4 +265,23 @@ public class LinkListAlgorithm {
 		node.data = insert.data;
 		insert.data= temp;	
 	}
+
+	public <T> LinkListNode<T> find (LinkListNode<T> head, T data)
+	{
+		while(head!=null&& head.data!=data)
+			head=head.next;
+		return head;
+	}
+	public <T> LinkListNode<T> remove(LinkListNode<T> head, T del)
+	{		
+		if(head==null) return null;
+		if(head.data == del) return head.next;
+		while(head.next!=null && head.next.data!=del)
+			head=head.next;
+		if(head!=null && head.next!=null)
+		{
+			head.next= head.next.next;
+		}
+		return head;
+	}
 }
