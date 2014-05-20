@@ -291,7 +291,7 @@ public class TreeAlgorithm {
 		}
 		return root;
 	}
-	List<TrieNode> path = new LinkedList<TrieNode>();
+	private List<TrieNode> path = new LinkedList<TrieNode>();
 	public void printAllWords(TrieNode root)
 	{
 		if(root==null)
@@ -315,7 +315,9 @@ public class TreeAlgorithm {
 	
 	public <T> TreeNode<T> LCA(TreeNode<T> root, TreeNode<T> a, TreeNode<T> b)
 	{
-		if(root==null||a==null||b==null) return null;
+		if(root==null) return null;
+		if(a!=null && b==null) return a;
+		if(a==null && b!=null) return b;
 		if(root==a||root==b) return root;
 		if(isPartOf(root.left, a) && isPartOf(root.right,b) || isPartOf(root.right, a) && isPartOf(root.left, b)) 
 			return root;
@@ -326,7 +328,9 @@ public class TreeAlgorithm {
 	
 	public <T> TreeNode<T> LCA2(TreeNode<T> root, TreeNode<T> a, TreeNode<T> b)
 	{
-		if(root==null||a==null||b==null) return null;
+		if(root==null) return null;
+		if(a!=null && b==null) return a;
+		if(a==null && b!=null) return b;
 		if(root==a||root==b) return root;
 		int numLeft = has(root.left, a, b);
 		if(numLeft==2) return LCA2(root.left, a, b);
@@ -357,6 +361,60 @@ public class TreeAlgorithm {
 		int num = has(root.left,a,b);
 		if(num==2) return 2;
 		return num + has(root.right,a,b);
+	}
+	public <T> TreeNode<T> LCA3(TreeNode<T> root, TreeNode<T> a, TreeNode<T> b)
+	{
+		if(root==null) return null;
+		if(a!=null && b==null) return a;
+		if(a==null && b!=null) return b;
+		List<TreeNode<T>> path1 = findPath(root,a);
+		if(path1==null) throw new IllegalArgumentException("a not in the tree of root.");
+		List<TreeNode<T>> path2 = findPath(root,b);
+		if(path2==null) throw new IllegalArgumentException("b not in the tree of root.");
+		int i=0;
+		while(path1.get(i)==path2.get(i))
+			i++;
+		return path1.get(--i);
+	}
+	public <T> void findPath (TreeNode<T> root, TreeNode<T> a,List<TreeNode<T>> curPath, List<TreeNode<T>> path)
+	{
+		if(root==null || a==null) return;
+		if(path==null || curPath==null) throw new IllegalArgumentException("path and curPath argument could not be null.");
+		if(path.size()!=0) throw new IllegalArgumentException("path should be empty.");
+		curPath.add(root);
+		if(root==a)
+		{
+			path.addAll(curPath);
+			return;
+		}
+		findPath(root.left, a, curPath, path);
+		if(path.size()==0)
+			findPath(root.right, a, curPath, path);
+		curPath.remove(curPath.size()-1);
+	}
+	
+	public <T> List<TreeNode<T>>findPath(TreeNode<T> root, TreeNode<T> a)
+	{
+		if(root==null||a==null) return null;
+		if(root==a)
+		{
+			List<TreeNode<T>> path = new ArrayList<TreeNode<T>>();
+			path.add(root);
+			return path;
+		}
+		List<TreeNode<T>> leftPath = findPath(root.left, a);
+		if(leftPath!=null) 
+		{			
+			leftPath.add(0, root);
+			return leftPath;
+		}
+		List<TreeNode<T>> rightPath = findPath(root.right,a);
+		if(rightPath!=null)
+		{
+			rightPath.add(0,root);
+			return rightPath;
+		}
+		return null;
 	}
 	public <T> TreeNode<T> find(TreeNode<T> root, T value)
 	{

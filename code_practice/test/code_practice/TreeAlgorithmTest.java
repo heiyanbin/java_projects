@@ -1,8 +1,7 @@
 package code_practice;
 
 import static org.junit.Assert.*;
-
-import java.util.Arrays;
+import java.util.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -101,6 +100,19 @@ public class TreeAlgorithmTest {
 	}
 	
 	@Test
+	public void testLCA3()
+	{
+		TreeNode<Integer> root = target.buildBinarySearchTree(new int[]{5,3,2,4,8,6,7,9});
+		TreeNode<Integer> a = target.find(root, 3);
+		TreeNode<Integer> b = target.find(root, 7);
+		assertEquals(root,target.LCA3(root, a, b));
+		a = target.find(root, 9);
+		TreeNode<Integer> expected = target.find(root, 8);
+		TreeNode<Integer> actual = target.LCA3(root, a, b);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void testTranverseByStack()
 	{
 		target.preOrderByStack(root);
@@ -120,4 +132,17 @@ public class TreeAlgorithmTest {
 		
 	}
 	
+	@Test
+	public void testFindPath()
+	{
+		List<TreeNode<Integer>> path = new ArrayList<TreeNode<Integer>>(),curPath = new ArrayList<TreeNode<Integer>>();
+		
+		TreeNode<Integer> a= target.find(root, 5);
+		target.findPath(root, a, curPath, path);
+		List<TreeNode<Integer>> path2 = target.findPath(root, a);
+		assertArrayEquals(path.toArray(),path2.toArray());
+		
+		for(TreeNode<Integer> o : path)
+			System.out.println(o.data);
+	}
 }
