@@ -14,15 +14,15 @@ public class GreedyAlgorithmTest {
 
 	@Test
 	public void testMinWorkTime() {
-		WorkItem[] works = new WorkItem[]
+		Ware[] works = new Ware[]
 		{
-			new WorkItem(3,6),
-			new WorkItem(5,2),
-			new WorkItem(8,1),
-			new WorkItem(7,4),
-			new WorkItem(10,9),
+			new Ware(3,6),
+			new Ware(5,2),
+			new Ware(8,1),
+			new Ware(7,4),
+			new Ware(10,9),
 		};
-		assertEquals(34,target.minWorkTime(works));
+		assertEquals(34,target.minTotalProcessTime(works));
 	}
 	
 	@Test

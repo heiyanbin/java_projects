@@ -1,37 +1,37 @@
 package code_practice;
 import java.util.*;
 
-class Thing implements Comparable<Thing>
+class Commodity implements Comparable<Commodity>
 {
 	int name;
 	int value;
-	int amount;
+	int maxAmount;
 	@Override 
-	public int compareTo(Thing o)
+	public int compareTo(Commodity o)
 	{
 		if(o==null) throw new IllegalArgumentException();
 		return ((Integer)value).compareTo(o.value);
 	}
 }
 
-class WorkItem implements Comparable<WorkItem>
+class Ware implements Comparable<Ware>
 {
 	int ATime;
 	int BTime;
-	WorkItem(int a, int b)
+	Ware(int a, int b)
 	{
 		this.ATime = a;
 		this.BTime = b;
 	}
-	public int compareTo(WorkItem o)
+	public int compareTo(Ware o)
 	{
 		if(o==null) throw new IllegalArgumentException();
 		return ((Integer)ATime).compareTo(o.ATime);
 	}
-	static class MinTimeComparator implements Comparator<WorkItem>
+	static class MinTimeComparator implements Comparator<Ware>
 	{
 		@Override
-		public int compare(WorkItem w1, WorkItem w2)
+		public int compare(Ware w1, Ware w2)
 		{
 			if(w1==null || w2 == null)
 				throw new IllegalArgumentException();
@@ -41,7 +41,7 @@ class WorkItem implements Comparable<WorkItem>
 }
 public class GreedyAlgorithm 
 {
-	int knapsack(Thing[] a, int C)
+	int knapsack(Commodity[] a, int C)
 	{
 		if(a==null || C< 0) throw new IllegalArgumentException();
 		if(a.length == 0 || C== 0 )return 0;
@@ -50,25 +50,25 @@ public class GreedyAlgorithm
 		int sumValue = 0;
 		for(int i=0;i<a.length && C>0;i++)
 		{
-			int grab = a[i].amount<=C ? a[i].amount : C;
+			int grab = a[i].maxAmount<=C ? a[i].maxAmount : C;
 			sumValue += grab * a[i].value;
 			C=C-grab;
-			System.out.println(a[i].name + a[i].amount);		
+			System.out.println(a[i].name + a[i].maxAmount);		
 		}
 		System.out.println(sumValue);
 		return sumValue;
 	}
 	
-	int minWorkTime(WorkItem[] a)
+	int minTotalProcessTime(Ware[] a)
 	{
-		Arrays.sort(a,new WorkItem.MinTimeComparator());
+		Arrays.sort(a,new Ware.MinTimeComparator());
 		for(int i=0,j=a.length-1;i<j;)
 		{
 			if(a[i].ATime<=a[i].BTime)
 				i++;
 			else
 			{	
-				WorkItem w = a[i];
+				Ware w = a[i];
 				int k=i+1;
 				while(k<=j)
 				{
@@ -80,7 +80,7 @@ public class GreedyAlgorithm
 			}			
 		}
 		int aLast=0, bLast=0;
-		for(WorkItem w : a)
+		for(Ware w : a)
 		{
 			aLast += w.ATime;
 			bLast = Math.max(aLast,bLast) + w.BTime;
@@ -113,6 +113,41 @@ public class GreedyAlgorithm
 		return machineTime[machineCount-1];
 	}
 	
+	void travel(int[] d, int[] p, int C, double dl, int D)
+	{
+		if(d==null || d.length==0 || p == null || p.length == 0 || d.length != p.length || C<=0 || dl<=0 || D<=0)
+			throw new IllegalArgumentException();
+		int n = d.length;
+		List<Double> addGas = new ArrayList<Double>();
+		List<Integer> stationList = new ArrayList<Integer>();
+		int i=0;
+		stationList.add(0);
+		while(i<n)
+		{
+			int j=i+1;
+			if(d[j]-d[i]>C*dl)
+				throw new RuntimeException("Could not reach next station.");
+			while( j<n && p[j]>p[i])
+			{
+				j++;
+			}
+			if(j<n && C*dl>=d[j])
+			{
+				
+				addGas.add((d[j]-d[i])/dl);
+				stationList.add(j);
+				i=j;
+			}
+			else
+			{
+				addGas.add(C+0.0);
+				stationList.add(i+1);
+				i++;
+			}
+		}
+		for(int station : stationList)
+			System.out.println(station);
+	}
 	<T> void reverse(T[] a)
 	{
 		if(a==null || a.length==0) return;

@@ -20,10 +20,12 @@ public class GraphAlgorithmTest {
 			g.add(new GraphNode<Integer>(i));
 		
 		g.get(1).addLink(g.get(2));
-		g.get(1).addLink(g.get(3));
+	//	g.get(1).addLink(g.get(3));
 		g.get(1).addLink(g.get(4));
+		g.get(1).addLink(g.get(6));
 		g.get(3).addLink(g.get(6));
 		g.get(4).addLink(g.get(5));
+	//	g.get(4).addLink(g.get(6));
 		g.get(5).addLink(g.get(6));		
 		
 		target = new GraphAlgorithm<Integer>();
@@ -54,7 +56,7 @@ public class GraphAlgorithmTest {
 	public void testDijkstra()
 	{
 		int MAX = 10000;
-		Graph g = new Graph(new int[][]
+		GraphByMatrix g = new GraphByMatrix(new int[][]
 			{
 				{0,5,3,5},
 				{MAX,0,MAX,MAX},

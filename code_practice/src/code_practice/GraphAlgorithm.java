@@ -28,21 +28,46 @@ class GraphNode<T>
 		return false;
 	}
 }
-class Graph<T>
+class GraphByMatrix<T>
 {
 	T[] V;
 	int[][] E;
-	Graph(T[] V, int[][]E)
+	int n;
+	GraphByMatrix(T[] V, int n, int[][]E)
 	{
 		this.V = V;
+		this.n = n;
 		this.E = E;
 	}
-	Graph(int[][] E)
+	GraphByMatrix(int[][] E)
 	{
 		this.E=E;
 	}
 }
-
+class GraphByList<T>
+{
+	static class Edge
+	{
+		int weight;
+		int v;
+		Edge next;
+		Edge(int weight, int v)
+		{
+			this.weight = weight;
+			this.v = v;
+		}
+	}
+	static class Vertex<T>
+	{
+		T data;
+		Edge edgeHead;
+		Vertex(T data)
+		{
+			this.data = data;
+		}
+	}
+	Vertex<T>[] V;	
+}
 public class GraphAlgorithm<T>
 {
 	int minLen = Integer.MAX_VALUE;
@@ -52,7 +77,8 @@ public class GraphAlgorithm<T>
 	{
 		if(start==null || end == null || curPath == null)
 			return;
-		if(curPath.contains(start)) return;		
+		if(curPath.contains(start)) 
+			return;		
 		curPath.add(start);
 		if(start==end)
 		{
@@ -63,9 +89,8 @@ public class GraphAlgorithm<T>
 				minLen = curPath.size();	
 				found = true;
 			}
-			return;
 		}
-		if(start.links!=null)
+		else if(start.links!=null)
 		{
 			for(GraphNode<T> link : start.links)
 			{
@@ -74,7 +99,7 @@ public class GraphAlgorithm<T>
 				{
 					found = false;
 					break;
-				}					
+				}
 			}
 		}
 		curPath.remove(start);
@@ -120,7 +145,7 @@ public class GraphAlgorithm<T>
 		}			
 	}
 	
-	int[] dijkstra(int source, Graph g)
+	int[] dijkstra(int source, GraphByMatrix g)
 	{
 		int n = g.E.length;
 		int[] dist = new int[n];
