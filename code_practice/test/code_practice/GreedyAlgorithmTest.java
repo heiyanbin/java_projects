@@ -24,5 +24,16 @@ public class GreedyAlgorithmTest {
 		};
 		assertEquals(34,target.minWorkTime(works));
 	}
+	
+	@Test
+	public void testDispatchWork() {
+		assertEquals(4, target.dispatchWork(new int[]{1,4,2}, 5));
+		assertEquals(5, target.dispatchWork(new int[]{1,4,2}, 2));
+		assertEquals(12, target.dispatchWork(new int[]{4,2,7,10}, 2));
+		assertEquals(19, target.dispatchWork(new int[]{4,2,7,5,10}, 2));
+		assertEquals(12, target.dispatchWork(new int[]{4,2,7,5,10}, 3));
+		
+		
+	}
 
 }

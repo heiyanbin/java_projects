@@ -28,6 +28,20 @@ class GraphNode<T>
 		return false;
 	}
 }
+class Graph<T>
+{
+	T[] V;
+	int[][] E;
+	Graph(T[] V, int[][]E)
+	{
+		this.V = V;
+		this.E = E;
+	}
+	Graph(int[][] E)
+	{
+		this.E=E;
+	}
+}
 
 public class GraphAlgorithm<T>
 {
@@ -104,5 +118,43 @@ public class GraphAlgorithm<T>
 				}
 			}
 		}			
+	}
+	
+	int[] dijkstra(int source, Graph g)
+	{
+		int n = g.E.length;
+		int[] dist = new int[n];
+		List<Integer> S = new ArrayList<Integer>();
+		List<Integer> U = new ArrayList<Integer>();
+		for(int i=0; i<n;i++)
+		{
+			U.add(i);
+			if(i==source)
+				dist[i] =0;
+			else
+				dist[i] = g.E[source][i];
+		}
+		S.add(source);
+		U.remove((Integer)source);
+		while(S.size()<n)
+		{
+			int minLen = Integer.MAX_VALUE;
+			int w = -1;
+			for(int v : U)
+			{			
+				if(dist[v]<minLen)
+				{
+					minLen = dist[v];
+					w = v;
+				}
+			}
+			S.add(w);
+			U.remove((Integer)w);
+			for(int v: U)
+			{
+				dist[v] = Math.min(dist[v], dist[w]+g.E[w][v]);
+			}
+		}
+		return dist;
 	}
 }

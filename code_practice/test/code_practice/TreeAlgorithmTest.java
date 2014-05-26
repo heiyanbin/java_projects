@@ -145,4 +145,13 @@ public class TreeAlgorithmTest {
 		for(TreeNode<Integer> o : path)
 			System.out.println(o.data);
 	}
+	
+	@Test
+	public void testHuffmanTree()
+	{
+		TreeNode<Integer> root = target.buildHuffmanTree(new int[]{3,5,2,1,4});
+		int WPL = target.WPL(root);
+		assertEquals(5+4*2+3*3+2*4+1*4, WPL);
+		target.printByLevel(root);
+	}
 }

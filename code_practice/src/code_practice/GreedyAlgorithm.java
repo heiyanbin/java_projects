@@ -87,6 +87,32 @@ public class GreedyAlgorithm
 		}
 		return bLast;
 	}
+	
+	int dispatchWork(int[] works, int machineCount)
+	{
+		if(machineCount<1) throw new IllegalArgumentException();
+		if(works==null || works.length ==0) return 0;	
+		
+		Arrays.sort(works);
+		int[] machineTime = new int[machineCount];
+		int i=0;
+		while(i < works.length)
+		{
+			int k = 0;			
+			while(i+k < works.length && k <machineCount)
+			{
+				k++;
+			}
+			for(int j= 0; j<k;j++)
+			{
+				machineTime[j] += works[i+k-j-1];
+			}
+			Arrays.sort(machineTime);
+			i=i+k;
+		}
+		return machineTime[machineCount-1];
+	}
+	
 	<T> void reverse(T[] a)
 	{
 		if(a==null || a.length==0) return;

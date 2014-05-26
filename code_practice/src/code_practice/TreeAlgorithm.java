@@ -492,6 +492,38 @@ public class TreeAlgorithm {
 			}
 		}
 	}
+	
+	public TreeNode<Integer> buildHuffmanTree(int [] w)
+	{
+		if(w==null || w.length == 0 ) return null;
+		if(w.length == 1) return new TreeNode<Integer>(w[0]);
+		Arrays.sort(w);
+		TreeNode<Integer> root = new TreeNode<Integer>(w[0]);
+		for(int i=1;i<w.length;i++)
+		{
+			TreeNode<Integer> right = new TreeNode<Integer>(w[i]);
+			TreeNode<Integer> newRoot = new TreeNode<Integer>(root.data + w[i]);
+			newRoot.left = root;
+			newRoot.right = right;
+			root = newRoot;
+		}
+		return root;
+	}
+	
+	public int WPL(TreeNode<Integer> root)
+	{
+		calculateWPL(root,0);
+		return wpl;
+	}
+	int wpl = 0;
+	private void calculateWPL(TreeNode<Integer> root, int pathLen)
+	{
+		if(root == null) return;
+		if(root.left==null && root.right == null)
+			wpl = wpl + root.data * pathLen;
+		calculateWPL(root.left, pathLen+1);
+		calculateWPL(root.right, pathLen+1);
+	}
 }
 
 

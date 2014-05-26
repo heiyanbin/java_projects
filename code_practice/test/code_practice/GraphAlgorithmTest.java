@@ -51,14 +51,21 @@ public class GraphAlgorithmTest {
 	}
 	
 	@Test
-	public void test()
+	public void testDijkstra()
 	{
-		List<Integer> list = new ArrayList<Integer>(); 
-		for(int i= 0;i<3;i++)
-			list.add(0,i);
-		
-		list.add(4,4);
-		
-		System.out.println();
+		int MAX = 10000;
+		Graph g = new Graph(new int[][]
+			{
+				{0,5,3,5},
+				{MAX,0,MAX,MAX},
+				{MAX,1,0,4},
+				{MAX,MAX,0,MAX}
+			});
+		int[] dist = target.dijkstra(0, g);
+		assertArrayEquals(new int[]{0,4,3,5}, dist);
+		for(int d : dist)
+		{
+			System.out.println(d);
+		}
 	}
 }
