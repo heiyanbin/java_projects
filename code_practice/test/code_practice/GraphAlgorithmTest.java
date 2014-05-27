@@ -10,24 +10,24 @@ import org.junit.Test;
 public class GraphAlgorithmTest {
 
 	GraphAlgorithm<Integer> target;
-	List<GraphNode<Integer>> g;
+	Graph<Integer> g;
 	@Before
 	public void setUp() throws Exception 
 	{
-		g = new ArrayList<GraphNode<Integer>>();
-		g.add(null);
+		g = new Graph<Integer>();
+		List<GraphNode<Integer>> V = g.V;
+		V.add(null);
 		for (int i=1;i<=6;i++)
-			g.add(new GraphNode<Integer>(i));
+			V.add(new GraphNode<Integer>(i));
 		
-		g.get(1).addLink(g.get(2));
-	//	g.get(1).addLink(g.get(3));
-		g.get(1).addLink(g.get(4));
-		g.get(1).addLink(g.get(6));
-		g.get(3).addLink(g.get(6));
-		g.get(4).addLink(g.get(5));
-	//	g.get(4).addLink(g.get(6));
-		g.get(5).addLink(g.get(6));		
-		
+		V.get(1).addLink(V.get(2));
+		V.get(1).addLink(V.get(3));
+		V.get(1).addLink(V.get(4));
+	//	V.get(1).addLink(V.get(6));
+		V.get(3).addLink(V.get(6));
+		V.get(4).addLink(V.get(5));
+	//	V.get(4).addLink(V.get(6));
+	//	V.get(5).addLink(V.get(6));		
 		target = new GraphAlgorithm<Integer>();
 	}
 
@@ -35,7 +35,7 @@ public class GraphAlgorithmTest {
 	public void testFindShortestPath() 
 	{
 		List<GraphNode<Integer>> minPath = new ArrayList<GraphNode<Integer>>();
-		target.findShortestPath(g.get(1), g.get(6), minPath);
+		target.findShortestPath(g.V.get(1), g.V.get(6), minPath);
 		for(GraphNode<Integer> node : minPath)
 			System.out.println(node.data);
 	}
@@ -43,13 +43,25 @@ public class GraphAlgorithmTest {
 	@Test
 	public void testDFS()
 	{
-		target.DFS(g.get(1));
+		target.DFS(g.V.get(1));
+		System.out.println();
+		target.DFSByIteration(g.V.get(1));
+		System.out.println();
+		target.DFS(g);
 	}
 	
 	@Test
 	public void testBFS()
 	{
-		target.BFS(g.get(1));
+		target.BFS(g.V.get(1));
+		System.out.println();
+		target.BFS(g);
+	}
+	@Test
+	public void testHasLoop()
+	{
+		System.out.println(target.hasLoop(g.V.get(1),null));
+		System.out.println(target.hasLoop(g));
 	}
 	
 	@Test
