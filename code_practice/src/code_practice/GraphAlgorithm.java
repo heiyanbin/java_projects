@@ -77,7 +77,7 @@ public class GraphAlgorithm<T>
 	int minLen = Integer.MAX_VALUE;
 	List<GraphNode<T>> curPath= new ArrayList<GraphNode<T>>();
 	boolean found = false;
-	void findShortestPath(GraphNode<T> start, GraphNode<T> end, List<GraphNode<T>> minPath)
+	void findShortestPathByDFS(GraphNode<T> start, GraphNode<T> end, List<GraphNode<T>> minPath)
 	{
 		if(start==null || end == null || curPath == null)
 			return;
@@ -98,7 +98,7 @@ public class GraphAlgorithm<T>
 		{
 			for(GraphNode<T> link : start.links)
 			{
-				findShortestPath(link, end, minPath);
+				findShortestPathByDFS(link, end, minPath);
 				if(found)
 				{
 					found = false;
@@ -108,7 +108,36 @@ public class GraphAlgorithm<T>
 		}
 		curPath.remove(start);
 	}
-	
+	int findShortestPathByBFS(GraphNode<T> start, GraphNode<T> end)
+	{
+		if(start == null || end == null) throw new IllegalArgumentException();
+		visited.clear();
+		LinkedList<GraphNode<T>> q = new LinkedList<GraphNode<T>>();
+		q.add(start);
+		GraphNode<T> lastNodeInLevel = start;
+		int level=0;
+		while(!q.isEmpty())
+		{
+			GraphNode<T> node = q.poll();
+			if(node==end)
+				break;
+			visited.add(node);
+			if(node.links!=null)
+			{
+				for(GraphNode<T> link : node.links)
+				{
+					if(!visited.contains(link))
+						q.add(link);
+				}
+			}
+			if(node==lastNodeInLevel)
+			{
+				level++;
+				end = q.getLast();
+			}
+		}
+		return level;
+	}
 	HashSet visited = new HashSet();
 	void DFS(GraphNode<T> start)
 	{
