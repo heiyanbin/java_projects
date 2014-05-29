@@ -111,7 +111,7 @@ public class GraphAlgorithm<T>
 	int findShortestPathByBFS(GraphNode<T> start, GraphNode<T> end)
 	{
 		if(start == null || end == null) throw new IllegalArgumentException();
-		visited.clear();
+		HashSet visited = new HashSet();
 		LinkedList<GraphNode<T>> q = new LinkedList<GraphNode<T>>();
 		q.add(start);
 		GraphNode<T> lastNodeInLevel = start;
@@ -133,7 +133,7 @@ public class GraphAlgorithm<T>
 			if(node==lastNodeInLevel)
 			{
 				level++;
-				end = q.getLast();
+				lastNodeInLevel = q.getLast();
 			}
 		}
 		return level;
@@ -219,15 +219,14 @@ public class GraphAlgorithm<T>
 		while(queue.size()>0)
 		{
 			GraphNode<T> node = queue.remove();
-			if(visited.contains(node)) 
-				continue;
 			System.out.println(node.data + " ");
 			visited.add(node);
+			
 			if(start.links!=null)
 			{
 				for(GraphNode<T> link : node.links)
 				{
-				//	if(!visited.contains(link)) 
+					if(!visited.contains(link)) 
 						queue.add(link);
 				}
 			}

@@ -27,7 +27,7 @@ public class GraphAlgorithmTest {
 		V.get(3).addLink(V.get(6));
 		V.get(4).addLink(V.get(5));
 	//	V.get(4).addLink(V.get(6));
-	//	V.get(5).addLink(V.get(6));		
+		V.get(5).addLink(V.get(6));		
 		target = new GraphAlgorithm<Integer>();
 	}
 
@@ -35,11 +35,11 @@ public class GraphAlgorithmTest {
 	public void testFindShortestPath() 
 	{
 		List<GraphNode<Integer>> minPath = new ArrayList<GraphNode<Integer>>();
-		target.findShortestPathByDFS(g.V.get(1), g.V.get(6), minPath);
+		target.findShortestPathByDFS(g.V.get(1), g.V.get(5), minPath);
 		for(GraphNode<Integer> node : minPath)
 			System.out.println(node.data);
 		
-		assertEquals(minPath.size()-1, target.findShortestPathByBFS(g.V.get(1), g.V.get(6)));
+		assertEquals(minPath.size()-1, target.findShortestPathByBFS(g.V.get(1), g.V.get(5)));
 	}
 
 	@Test
