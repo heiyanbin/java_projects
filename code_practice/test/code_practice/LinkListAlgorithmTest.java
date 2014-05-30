@@ -13,7 +13,7 @@ public class LinkListAlgorithmTest {
 	LinkListNode<Integer> head;
 	LinkListAlgorithm target;
 	
-	class ListNode extends LinkListNode<Integer>{}
+	
 	@Before
 	public void setUp()
 	{
@@ -140,4 +140,15 @@ public class LinkListAlgorithmTest {
 		assertTrue(target.remove(head, 1).linkListEquals(target.makeLinkList(new Integer[]{2,4})));
 	}
 
+	@Test
+	public void testSortList()
+	{
+		ListNode head= new ListNode(3, new ListNode(2, new ListNode(1)));
+		ListNode expected = new ListNode(1, new ListNode(2, new ListNode(3)));
+		target.fastSort(head, null);
+		assertTrue(head.linkListEquals(expected));
+		
+		head= new ListNode(3, new ListNode(2, new ListNode(1)));
+		assertTrue(target.mergeSort(head).linkListEquals(expected));
+	}
 }

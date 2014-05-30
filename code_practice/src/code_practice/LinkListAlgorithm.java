@@ -29,6 +29,30 @@ class LinkListNode<T>
 		}
 	}
 }
+class ListNode //extends LinkListNode<Integer>
+{
+	int val;
+	ListNode next;
+	ListNode(int x) 
+	{
+        val = x;
+        next = null;
+	}
+	ListNode(int x, ListNode next)
+	{
+		this(x);
+		this.next = next;
+	}
+	public boolean linkListEquals(Object o)
+	{
+		if(o==null || !(o instanceof ListNode)) return false;
+		ListNode o2 = (ListNode)o;
+		if(val!=o2.val) return false;
+		if(next==null && o2.next != null) return false;
+		if(next ==null && o2.next== null) return true;
+		return next.linkListEquals(o2.next);
+	}
+}
 public class LinkListAlgorithm {
 	<T> LinkListNode<T> makeLinkList(List<T> data)
 	{
@@ -284,4 +308,106 @@ public class LinkListAlgorithm {
 		}
 		return head;
 	}
+	public ListNode insertSort(ListNode head) 
+	{
+        if(head==null || head.next==null)
+            return head;
+        ListNode p= head.next;
+        ListNode prevP = head;
+        while(p!=null)
+        {
+        	ListNode i= head;
+        	ListNode prevI=null;
+            while(p.val>=i.val && i!=p)
+            {
+                prevI=i;
+                i=i.next;
+            }
+            if(i==p)
+            {
+                prevP=p;
+                p=p.next;
+            }
+            else
+            {
+                prevP.next=p.next;
+                p.next=i;
+                if(prevI!=null)
+                {
+                    prevI.next=p;
+                    prevI=prevI.next;
+                }
+                else
+                {
+                    head = p;
+                }
+                p=prevP.next;
+            }
+        }
+        return head;
+    }
+	public void fastSort(ListNode head, ListNode endExclusive)
+    {
+        if(head==null || head==endExclusive ||head.next==endExclusive)
+            return;
+        ListNode mid = partition(head, endExclusive);
+        fastSort(head, mid);
+        if(mid!=null)
+            fastSort(mid.next, null);
+    }
+    public ListNode partition(ListNode head, ListNode endExclusive)
+    {
+        if(head==null||head==endExclusive||head.next==endExclusive) 
+            return head;
+        ListNode prevP =head, p=head.next, q=head.next;
+        while(q!=endExclusive)
+        {
+            if(q.val<head.val)
+            {
+                int temp=p.val;
+                p.val= q.val;
+                q.val=temp;
+                prevP=p;
+                p=p.next;
+            }
+            q=q.next;
+        }
+        int temp = prevP.val;
+        prevP.val = head.val;
+        head.val = temp;
+        return prevP;
+    }
+    
+    public ListNode mergeSort(ListNode head) {
+        if(head==null || head.next==null)
+            return head;
+        
+        ListNode p= head, prevP= null,q= head;
+        while(q!=null && q.next!=null)
+        {
+            prevP=p;
+            p=p.next;
+            q=q.next.next;
+        }
+        prevP.next=null;
+        return mergeList(mergeSort(head), mergeSort(p));
+        
+    }
+
+    ListNode mergeList(ListNode head1, ListNode head2)
+    {
+        if(head1==null) return head2;
+        if(head2==null) return head1;
+        if(head1.val<=head2.val)
+        {
+            head1.next = mergeList(head1.next, head2);
+            return head1;
+        }
+        else
+        {
+            head2.next = mergeList(head1, head2.next);
+            return head2;
+        }
+
+    }
 }

@@ -66,6 +66,7 @@ class ColoredSegment extends Segment
 class Point
 {
 	int x;
+	int y;
 	Color color;
 	Point(int x, Color color)
 	{
@@ -75,6 +76,11 @@ class Point
 	Point(int x)
 	{
 		this(x,Color.Blank);
+	}
+	Point(int x, int y)
+	{
+		this.x=x;
+		this.y=y;
 	}
 }
 
