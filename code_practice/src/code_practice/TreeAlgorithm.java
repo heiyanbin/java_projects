@@ -429,7 +429,7 @@ public class TreeAlgorithm {
 	public <T> void preOrderByStack(TreeNode<T> root)
 	{
 		Stack<TreeNode<T>> stack = new Stack<TreeNode<T>>();
-		while(!stack.isEmpty()||root!=null)
+		while(!stack.isEmpty()||root!=null)//stack stores previous level's next candidates
 		{
 			if(root!=null)
 			{
