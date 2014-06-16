@@ -108,10 +108,11 @@ public class GraphAlgorithm<T>
 		}
 		curPath.remove(start);
 	}
-	int findShortestPathByBFS(GraphNode<T> start, GraphNode<T> end)
+	int findShortestPathByBFS(GraphNode<T> start, GraphNode<T> end, List<GraphNode<T>> minPath)
 	{
 		if(start == null || end == null) throw new IllegalArgumentException();
-		HashSet visited = new HashSet();
+		HashSet<GraphNode<T>> visited = new HashSet<GraphNode<T>>();
+		Map<GraphNode<T>,GraphNode<T>> prev = new HashMap<GraphNode<T>,GraphNode<T>>();
 		LinkedList<GraphNode<T>> q = new LinkedList<GraphNode<T>>();
 		q.add(start);
 		GraphNode<T> lastNodeInLevel = start;
@@ -120,14 +121,26 @@ public class GraphAlgorithm<T>
 		{
 			GraphNode<T> node = q.poll();
 			if(node==end)
+			{
+				minPath.add(node);
+				while(prev.containsKey(node))
+				{
+					minPath.add(0, prev.get(node));
+					node= prev.get(node);
+				}
 				break;
+			}
 			visited.add(node);
 			if(node.links!=null)
 			{
 				for(GraphNode<T> link : node.links)
 				{
 					if(!visited.contains(link))
+					{
 						q.add(link);
+						if(!prev.containsKey(link))
+							prev.put(link, node);
+					}
 				}
 			}
 			if(node==lastNodeInLevel)

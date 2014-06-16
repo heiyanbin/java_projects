@@ -39,7 +39,10 @@ public class GraphAlgorithmTest {
 		for(GraphNode<Integer> node : minPath)
 			System.out.println(node.data);
 		
-		assertEquals(minPath.size()-1, target.findShortestPathByBFS(g.V.get(1), g.V.get(5)));
+		List<GraphNode<Integer>> minPath2 = new ArrayList<GraphNode<Integer>>();
+		target.findShortestPathByBFS(g.V.get(1), g.V.get(5),minPath2);
+		for(GraphNode<Integer> node : minPath2)
+			System.out.println(node.data);
 	}
 
 	@Test
