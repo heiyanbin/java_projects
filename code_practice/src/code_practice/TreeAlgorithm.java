@@ -376,6 +376,17 @@ public class TreeAlgorithm {
 			i++;
 		return path1.get(--i);
 	}
+	public <T> TreeNode<T> LCA4(TreeNode<T> root, TreeNode<T> a, TreeNode<T> b)
+	{
+		if(root==null) return null;
+		if(a==root||b==root) return root;
+		TreeNode<T> p1= LCA4(root.left, a, b);
+		TreeNode<T> p2= LCA4(root.right,a, b);
+		if(p1!=null && p2!=null) return root;
+		if(p1!=null) return p1;
+		if(p2!=null) return p2;
+		return null;
+	}
 	public <T> void findPath (TreeNode<T> root, TreeNode<T> a,List<TreeNode<T>> curPath, List<TreeNode<T>> path)
 	{
 		if(root==null || a==null) return;

@@ -37,7 +37,7 @@ class Segment
 	static class ByStartComparator implements Comparator<Segment>
 	{
 		@Override
-		public int compare(Segment a, Segment b)
+		public int compare(Segment a, Segment b) 
 		{
 			if(a==null || b==null) throw new IllegalArgumentException();
 			return ((Integer)a.start).compareTo(b.start);

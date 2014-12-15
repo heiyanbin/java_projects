@@ -7,113 +7,80 @@ import java.util.*;
 public class Main 
 {
 
+	volatile Object o;
 	public static void main(String[] args) 
 	{
-		Set<String> dict = new HashSet<String>();
-		dict.add("a");
-		dict.add("aa");
-		dict.add("aaa");
-		dict.add("aaaa");
-		dict.add("aaaaa");
-		dict.add("aaaaaa");
-		dict.add("aaaaaaa");
-		dict.add("aaaaaaaa");
-		dict.add("aaaaaaaaa");
-		dict.add("aaaaaaaaaa");
-		//dict.add("b");
-		List<String> l =  new Solution().wordBreak("aaaaaaaaaaaaaaaaaaaaaaaaaaaab", dict);
-		/*for(String s : l)
-			System.out.println(s);*/
-		if(l.isEmpty())
-			System.out.println("empty.");
+		
+		Solution s = new Solution();
+		String a = s.simplifyPath("/home/");
+        System.out.println(a);
+        
 	}
+	Integer[] removeDup(Integer [] A)
+	{
+		if(A==null) throw new IllegalArgumentException("input array should not be null");
+		Set<Integer> s= new HashSet<Integer>();
+		int i=0;
+		for(int j=0;j<A.length;j++)
+		{
+			if(!s.contains(A[j]))
+			{
+				A[i]=A[j];
+				s.add(A[j]);
+				i++;
+			}		
+		}
+		return Arrays.copyOf(A, i);
+	}
+	
 }
 	
 class Solution {
-    public List<String> wordBreak(String s, Set<String> dict) { 	
-    	List<String> output = new ArrayList<String>();
-    	
-    	/*Set<Character> charSet =  new HashSet<Character>();
-    	for(String word : dict)
-    	{
-    		for(int i=0;i<word.length();i++)
-    		{
-    			charSet.add(word.charAt(i));
-    		}
-    	}
-    	for(int i=0;i<s.length();i++)
-    	{
-    		if(!charSet.contains(s.charAt(i)))
-    			return output;
-    	}*/
-    	select (s, "", dict, output);
-        return output;
-    }
-    void select(String s, String x, Set<String> dict, List<String> output)
-    {
-    	if(s==null||s.length() ==0 )
-    	{
-    		output.add(x.trim());
-    		return;
-    	}
-    	for(int i=1;i<=s.length();i++)
-    	{
-    		String prefix = s.substring(0, i);
-    		if(dict.contains(prefix))
-    		{
-    			select(s.substring(i), x+prefix+' ', dict, output);
-    		}  		
-    	}
-    }
-}
 
- /*class ListNode {
-      int val;
-    ListNode next;
-      ListNode(int x) {
-          val = x;
-          next = null;
-      }
-  }
- 
- class Solution {
-    public ListNode sortList(ListNode head) {
-        if(head==null || head.next==null)
-            return head;
-        
-        fastSort(head, null);
-        return head;
-        
-    }
-    private void fastSort(ListNode head, ListNode endExclusive)
-    {
-        if(head==null || head==endExclusive || head.next == endExclusive)
-            return;
-        ListNode mid = partition(head, endExclusive);
-        fastSort(head, mid);
-        if(mid!=null)
-            fastSort(mid.next, null);
-    }
-    private ListNode partition(ListNode head, ListNode endExclusive)
-    {
-        if(head==null||head==endExclusive||head.next==endExclusive) 
-        	return head;
-        ListNode prevP =head, p=head.next, q=head.next;
-        while(q!=endExclusive)
+    
+	public String simplifyPath(String path) {
+        if(path==null || path.isEmpty() ) return path;
+        String[] parts = path.trim().split("/+");
+        List<String> s = new ArrayList<String>();
+        for(String part : parts)
         {
-            if(q.val<head.val)
-            {
-                int temp=p.val;
-                p.val= q.val;
-                q.val=temp;
-                prevP=p;
-                p=p.next;
-            }
-            q=q.next;
+        	if(!part.equals(".") && !part.equals(".."))
+        		s.add(part);
+        	else if(part.equals("..") && !s.isEmpty())
+        		s.remove(s.size()-1);
         }
-        int temp = prevP.val;
-        prevP.val = head.val;
-        head.val = temp;
-        return prevP;
+        if(s.isEmpty()) return "/";
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i<s.size();i++)
+        {
+        	if(sb.length()==0 || sb.charAt(sb.length()-1)!='/') sb.append("/");
+        	sb.append(s.get(i));
+        }
+       return sb.toString();
     }
-}*/
+	/*
+     * param A: A string
+     * param offset: Rotate string with offset.
+     * return: Rotated string.
+     */
+    public String rotateString(String A, int offset) {
+        // wirte your code here
+        char[] s = A.toCharArray();
+        reverse(s,0,s.length-offset-1);
+        reverse(s,s.length-offset, s.length-1);
+        reverse(s,0,s.length-1);
+        return new String(s);
+        
+    }
+    private void reverse(char[] s, int l, int r)
+    {
+        for(;l<r; l++,r--)
+        {
+            char c = s[l];
+            s[l]=s[r];
+            s[r]=c;
+        }
+    }
+    
+};
+

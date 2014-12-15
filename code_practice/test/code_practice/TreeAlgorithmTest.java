@@ -111,6 +111,18 @@ public class TreeAlgorithmTest {
 		TreeNode<Integer> actual = target.LCA3(root, a, b);
 		assertEquals(expected, actual);
 	}
+	@Test
+	public void testLCA4()
+	{
+		TreeNode<Integer> root = target.buildBinarySearchTree(new int[]{5,3,2,4,8,6,7,9});
+		TreeNode<Integer> a = target.find(root, 3);
+		TreeNode<Integer> b = target.find(root, 7);
+		assertEquals(root,target.LCA4(root, a, b));
+		a = target.find(root, 9);
+		TreeNode<Integer> expected = target.find(root, 8);
+		TreeNode<Integer> actual = target.LCA4(root, a, b);
+		assertEquals(expected, actual);
+	}
 	
 	@Test
 	public void testTranverseByStack()

@@ -228,19 +228,21 @@ public class GraphAlgorithm<T>
 		if(start==null) return;
 		Queue<GraphNode<T>>  queue = new LinkedList<GraphNode<T>>();
 		queue.add(start);
-		
+		visited.add(start);
 		while(queue.size()>0)
 		{
 			GraphNode<T> node = queue.remove();
-			System.out.println(node.data + " ");
-			visited.add(node);
+			System.out.print(node.data + " ");
 			
 			if(start.links!=null)
 			{
 				for(GraphNode<T> link : node.links)
 				{
-					if(!visited.contains(link)) 
+					if(!visited.contains(link))
+					{
 						queue.add(link);
+						visited.add(link);
+					}
 				}
 			}
 		}			
